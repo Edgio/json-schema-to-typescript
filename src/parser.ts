@@ -119,7 +119,8 @@ function parseNonLiteral(
   processed: Processed,
   usedNames: UsedNames
 ): AST {
-  const definitions = getDefinitionsMemoized(getRootSchema(schema as any)) // TODO
+  const rootSchema = getRootSchema(schema as any)
+  const definitions = getDefinitionsMemoized(rootSchema) // TODO
   const keyNameFromDefinition = findKey(definitions, _ => _ === schema)
 
   switch (type) {
@@ -204,6 +205,14 @@ function parseNonLiteral(
         type: 'UNION'
       }
     case 'REFERENCE':
+      const prefix = '#/definitions/'
+      if (schema.$ref && schema.$ref.startsWith(prefix)) {
+        const ref = schema.$ref.substr(prefix.length)
+        const def = definitions[ref]
+        if (def) {
+          return Object.assign({refComment: schema.description}, parse(def, options, undefined, processed, usedNames))
+        }
+      }
       throw Error(format('Refs should have been resolved by the resolver!', schema))
     case 'STRING':
       return {

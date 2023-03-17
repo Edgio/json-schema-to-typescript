@@ -76,9 +76,14 @@ export interface Options {
    * Generate unknown type instead of any
    */
   unknownAny: boolean
+  /**
+   * Resolve `$ref`s using [$RefParser](https://github.com/BigstickCarpet/json-schema-ref-parser)
+   */
+  resolve: boolean
 }
 
 export const DEFAULT_OPTIONS: Options = {
+  resolve: true,
   $refOptions: {},
   additionalProperties: true, // TODO: default to empty schema (as per spec) instead
   bannerComment: `/* eslint-disable */

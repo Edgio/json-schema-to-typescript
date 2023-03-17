@@ -6,11 +6,15 @@ export type DereferencedPaths = WeakMap<$RefParser.JSONSchemaObject, string>
 
 export async function dereference(
   schema: JSONSchema,
-  {cwd, $refOptions}: {cwd: string; $refOptions: $RefParser.Options}
+  {cwd, resolve, $refOptions}: {cwd: string; resolve: boolean; $refOptions: $RefParser.Options}
 ): Promise<{dereferencedPaths: DereferencedPaths; dereferencedSchema: JSONSchema}> {
-  log('green', 'dereferencer', 'Dereferencing input schema:', cwd, schema)
-  const parser = new $RefParser()
+  log('green', 'dereferencer', 'Dereferencing input schema:', cwd, schema, resolve)
   const dereferencedPaths: DereferencedPaths = new WeakMap()
+  if (!resolve){
+    const dereferencedSchema = schema
+    return {dereferencedPaths, dereferencedSchema}
+  }
+  const parser = new $RefParser()
   const dereferencedSchema = (await parser.dereference(cwd, schema as any, {
     ...$refOptions,
     dereference: {
