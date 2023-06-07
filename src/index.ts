@@ -15,6 +15,7 @@ import {validate} from './validator'
 import {isDeepStrictEqual} from 'util'
 import {link} from './linker'
 import {validateOptions} from './optionValidator'
+import * as fs from 'fs';
 
 export {EnumJSONSchema, JSONSchema, NamedEnumJSONSchema, CustomTypeJSONSchema} from './types/JSONSchema'
 
@@ -180,6 +181,8 @@ export async function compile(schema: JSONSchema4, name: string, options: Partia
 
   const generated = generate(optimized, _options)
   log('magenta', 'generator', time(), '✅ Result:', generated)
+
+  fs.writeFileSync(stripExtension(name) + '.ts', generated)
 
   const formatted = format(generated, _options)
   log('white', 'formatter', time(), '✅ Result:', formatted)

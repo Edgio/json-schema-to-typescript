@@ -1,8 +1,9 @@
 {
-  "name": "json-schema-to-typescript",
+  "name": "@edgecast/json-schema-to-typescript",
   "version": "11.0.3",
   "description": "compile json schema to typescript typings",
   "main": "dist/src/index.js",
+  
   "bin": {
     "json2ts": "dist/src/cli.js"
   },

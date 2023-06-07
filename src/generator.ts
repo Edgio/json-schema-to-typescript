@@ -307,6 +307,11 @@ function generateSetOperation(ast: TIntersection | TUnion, options: Options): st
 }
 
 function generateInterface(ast: TInterface, options: Options): string {
+
+  if (ast.keyName === 'prevalidate_cached_content') {
+    console.log('here')
+  }
+
   // If present, generate a single index signature from all patternProperties.
   let patternProperty = ''
   if (ast.params.some(_ => _.isPatternProperty)) {
